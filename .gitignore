@@ -1,0 +1,6 @@
+# data folder
+/.data/
+
+# env files
+.env*
+!.env*.example
