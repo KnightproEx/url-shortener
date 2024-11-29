@@ -1,0 +1,16 @@
+FROM oven/bun:1.1.5-slim
+
+WORKDIR /app
+
+COPY --from=node:20 /usr/local/bin/node /usr/local/bin/node
+COPY package.json bun.lockb ./
+
+RUN bun install --frozen-lockfile
+
+COPY . .
+
+RUN bun run prisma:generate
+
+CMD ["bun", "run", "dev"]
+
+EXPOSE 3000
