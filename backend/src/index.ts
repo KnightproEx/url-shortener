@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
 import { apiGroup } from "./routes/api";
-import { healthCheckRoute } from "./routes/healcheck";
+import { healthCheckRoute } from "./routes/health-check";
 import cors from "./utils/cors";
 import { ensureEnvLoaded } from "./utils/env";
 import swagger from "./utils/swagger";
@@ -15,7 +15,7 @@ const app = new Elysia({ normalize: true })
   .listen(3000);
 
 console.log(
-  "\x1b[33m%s %d\x1b[0m",
+  "\x1b[33m%s %s\x1b[0m",
   "🦊 Server is running at",
   `${app.server?.hostname}:${app.server?.port}`,
 );

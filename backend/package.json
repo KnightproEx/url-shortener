@@ -1,20 +1,17 @@
 {
   "name": "url-shortener-backend",
   "scripts": {
-    "lint": "biome check src",
+    "build": "bun run ./scripts/build",
     "dev": "bun run --watch ./src/index.ts",
+    "lint": "biome check src",
+    "prisma:deploy": "prisma migrate deploy",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:reset": "prisma migrate reset",
-    "prisma:deploy": "prisma migrate deploy",
     "prisma:push": "prisma db push",
+    "prisma:reset": "prisma migrate reset",
     "prisma:seed": "prisma db seed",
     "prisma:studio": "prisma studio --port 3005",
-    "build": "bun run ./scripts/build",
     "start": "NODE_ENV=production bun ./dist/index.js"
-  },
-  "prisma": {
-    "seed": "bun run ./scripts/seed.ts"
   },
   "dependencies": {
     "@elysiajs/bearer": "^1.1.2",
@@ -29,5 +26,8 @@
     "@types/jsonwebtoken": "^9.0.7",
     "bun-types": "^1.1.38",
     "prisma": "^6.0.0"
+  },
+  "prisma": {
+    "seed": "bun run ./scripts/seed.ts"
   }
 }

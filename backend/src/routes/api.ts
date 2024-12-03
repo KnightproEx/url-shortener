@@ -9,12 +9,14 @@ import {
 } from "../types/error";
 import { verifyAccessToken } from "../utils/jwt";
 import { authGroup } from "./auth";
-import { shortUrlGroup } from "./shorturl";
+import { publicGroup } from "./public";
+import { shortUrlGroup } from "./short-url";
 import { userGroup } from "./user";
 
 export const apiGroup = new Elysia().group("/api/v1", (app) => {
   return app
     .use(authGroup)
+    .use(publicGroup)
     .use(shortUrlGroup)
     .use(bearer())
     .derive(async ({ bearer, cookie: { accessToken } }) => {

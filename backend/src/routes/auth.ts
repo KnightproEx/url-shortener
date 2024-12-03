@@ -1,7 +1,7 @@
 import bearer from "@elysiajs/bearer";
 import Elysia, { t } from "elysia";
-import { findUserByCredentials, findUserById } from "../db/user";
-import { unauthorizedError } from "../types/error";
+import { createUser, findUserByCredentials, findUserById } from "../db/user";
+import { internalServerError, unauthorizedError } from "../types/error";
 import { DataResponse, SuccessResponse } from "../types/response";
 import {
   signTokens,
@@ -105,6 +105,25 @@ export const authGroup = new Elysia().group("/auth", (app) =>
         });
 
         return response;
+      },
+      {
+        tags: ["Auth"],
+        body: t.Object({
+          username: t.String({ error: "required" }),
+          password: t.String({ error: "required" }),
+        }),
+      },
+    )
+    .post(
+      "/register",
+      async ({ body }) => {
+        const user = await createUser(body.username, body.password);
+
+        if (!user) {
+          return internalServerError();
+        }
+
+        return SuccessResponse.json();
       },
       {
         tags: ["Auth"],

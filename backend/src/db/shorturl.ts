@@ -17,6 +17,22 @@ export const findShortUrlById = async (id: string) => {
 export const findPublicShortUrls = async () => {
   return await prisma.shortUrl.findMany({
     where: { isPublic: true, isActive: true, deletedAt: null },
+    omit: {
+      isActive: true,
+      isPublic: true,
+      timesClicked: true,
+      createdAt: true,
+      createdBy: true,
+      updatedAt: true,
+      deletedAt: true,
+    },
+  });
+};
+
+export const findShortUrlBySlug = async (slug: string) => {
+  return await prisma.shortUrl.findUnique({
+    where: { slug, isActive: true, deletedAt: null },
+    select: { url: true },
   });
 };
 

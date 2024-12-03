@@ -19,8 +19,8 @@ export const userGroup = new Elysia<"", false, ISingleton>().group(
       .get(
         "/short-url",
         async ({ user }) => {
-          const url = await findShortUrlsByUserId(user.id);
-          return DataResponse.json({ url });
+          const urls = await findShortUrlsByUserId(user.id);
+          return DataResponse.json({ urls });
         },
         { tags: ["User"] },
       )

@@ -3,12 +3,12 @@ import Elysia from "elysia";
 import { findPublicShortUrls } from "../db/shorturl";
 import { DataResponse } from "../types/response";
 
-export const shortUrlGroup = new Elysia().group("/short-url", (app) =>
+export const publicGroup = new Elysia().group("/public", (app) =>
   app.use(bearer()).get(
-    "/public",
+    "/short-url",
     async () => {
-      const url = await findPublicShortUrls();
-      return DataResponse.json({ url });
+      const urls = await findPublicShortUrls();
+      return DataResponse.json({ urls });
     },
     { tags: ["Short Url"] },
   ),

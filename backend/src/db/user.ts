@@ -3,7 +3,8 @@ import { prisma } from "./prisma";
 
 export const findUserById = async (id: string) => {
   return await prisma.user.findUnique({
-    where: { id, AND: { deletedAt: null } },
+    where: { id, deletedAt: null },
+    omit: { password: true, createdAt: true, updatedAt: true, deletedAt: true },
   });
 };
 
