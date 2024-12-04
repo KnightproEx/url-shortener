@@ -49,3 +49,8 @@ bun install
 bun x prisma generate
 bun x prisma migrate dev
 ```
+
+## Work in Progress
+
+[ ] Production Dockerfile
+[ ] Automated CI and CD
