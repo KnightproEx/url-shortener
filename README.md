@@ -30,3 +30,22 @@ Comprehensive url shortener with authentication solution enabling user to create
 ```bash
 docker compose watch
 ```
+
+3. Navigate to backend directory
+
+```bash
+cd backend
+```
+
+4. Install dependencies
+
+```bash
+bun install
+```
+
+5. Run prisma commands
+
+```bash
+bun x prisma generate
+bun x prisma migrate dev
+```
