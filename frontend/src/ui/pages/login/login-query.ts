@@ -19,7 +19,7 @@ export const useLogin = () => {
     mutationFn: loginApi,
     onSuccess: async () => {
       await queryClient.invalidateQueries();
-      navigate("/dashboard");
+      navigate("/");
     },
     onError: (e) => toast.error(e.message),
   });

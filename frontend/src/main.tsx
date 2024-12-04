@@ -1,5 +1,5 @@
 import { ColorModeProvider } from "@/components/ui/color-mode";
-import { queryClient } from "@/query/client";
+import { queryClient } from "@/ui/queries/client";
 import router from "@/ui/router/router";
 import { ChakraProvider } from "@chakra-ui/react";
 import { QueryClientProvider } from "@tanstack/react-query";

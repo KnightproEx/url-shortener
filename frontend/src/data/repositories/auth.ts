@@ -4,8 +4,10 @@ import { toFormData } from "axios";
 import type { DataResponse, GenericResponse } from "../type";
 
 export interface VerifyAuthResponse {
-  id: string;
-  username: string;
+  user: {
+    id: string;
+    username: string;
+  };
 }
 
 export const verifyAuthApi = async () => {
@@ -25,5 +27,10 @@ export const loginApi = async (input: LoginInput) => {
   return data.success;
 };
 
+// TODO: Implement this
 export const registerApi = () => {};
-export const logoutApi = () => {};
+
+export const logoutApi = async () => {
+  const { data } = await apiClient.post<GenericResponse>("/auth/logout");
+  return data.success;
+};

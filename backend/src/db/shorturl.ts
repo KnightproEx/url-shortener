@@ -3,14 +3,18 @@ import { prisma } from "./prisma";
 import type { OmitReadOnly } from "./types";
 
 export const createShortUrl = async (
-  data: OmitReadOnly<Omit<ShortUrl, "isActive" | "isPublic" | "timesClicked">>,
+  data: OmitReadOnly<
+    Omit<ShortUrl, "isActive" | "isPublic" | "timesClicked">
+  > & {
+    createdBy?: string;
+  },
 ) => {
   return await prisma.shortUrl.create({ data });
 };
 
-export const findShortUrlById = async (id: string) => {
+export const findShortUrlById = async (id: string, userId?: string) => {
   return await prisma.shortUrl.findUnique({
-    where: { id, deletedAt: null },
+    where: { id, createdBy: userId, deletedAt: null },
   });
 };
 
@@ -39,18 +43,33 @@ export const findShortUrlBySlug = async (slug: string) => {
 export const findShortUrlsByUserId = async (id: string) => {
   return await prisma.shortUrl.findMany({
     where: { createdBy: id, deletedAt: null },
+    omit: {
+      createdAt: true,
+      createdBy: true,
+      updatedAt: true,
+      deletedAt: true,
+    },
   });
 };
 
-export const updateShortUrl = async (
-  data: Omit<OmitReadOnly<ShortUrl> & { id: string }, "timesClicked">,
+export const updateShortUrlAndUserId = async (
+  data: Omit<
+    OmitReadOnly<ShortUrl> & { id: string; userId: string },
+    "timesClicked"
+  >,
 ) => {
-  return await prisma.shortUrl.update({ data, where: { id: data.id } });
+  return await prisma.shortUrl.update({
+    data,
+    where: { id: data.id, createdBy: data.userId },
+  });
 };
 
-export const deleteShortUrlById = async (id: string) => {
+export const deleteShortUrlByIdAndUserId = async (
+  id: string,
+  userId: string,
+) => {
   return await prisma.shortUrl.update({
-    where: { id },
+    where: { id, createdBy: userId },
     data: { deletedAt: new Date() },
   });
 };
