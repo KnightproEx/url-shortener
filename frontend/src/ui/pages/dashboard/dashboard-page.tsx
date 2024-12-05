@@ -22,9 +22,10 @@ const DashboardPage = () => {
 
   const publicShortUrlsColumns = [
     publicShortUrlsColumnHelper.display({
-      header: "No",
+      header: "#",
       id: "index",
       cell: ({ row }) => row.index + 1,
+      size: 20,
     }),
     publicShortUrlsColumnHelper.accessor("name", {
       cell: (info) => info.getValue(),
@@ -60,9 +61,10 @@ const DashboardPage = () => {
 
   const userShortUrlsColumns = [
     userShortUrlsColumnHelper.display({
-      header: "No",
+      header: "#",
       id: "index",
       cell: ({ row }) => row.index + 1,
+      size: 20,
     }),
     userShortUrlsColumnHelper.accessor("name", {
       cell: (info) => info.getValue(),
@@ -77,13 +79,47 @@ const DashboardPage = () => {
       header: "Url",
     }),
     userShortUrlsColumnHelper.accessor("isActive", {
-      cell: (info) => (info.getValue() ? "Yes" : "No"),
+      cell: (info) => (
+        <Stack align="center">{info.getValue() ? "Yes" : "No"}</Stack>
+      ),
       header: "Active",
+      size: 20,
     }),
     userShortUrlsColumnHelper.accessor("timesClicked", {
-      cell: (info) => info.getValue(),
+      cell: (info) => <Stack align="center">{info.getValue()}</Stack>,
       header: "Times Clicked",
+      size: 20,
     }),
+    userShortUrlsColumnHelper.accessor(
+      (row) => {
+        return { isActive: row.isActive, slug: row.slug };
+      },
+      {
+        cell: (info) =>
+          info.getValue().isActive && (
+            <IconButton
+              variant="ghost"
+              onClick={
+                info.getValue().isActive
+                  ? () => {
+                      const win = window.open(
+                        getUrlFromSlugEndpoint(info.getValue().slug),
+                        "_blank",
+                      );
+                      win?.focus();
+                    }
+                  : undefined
+              }
+            >
+              <FiArrowRight />
+            </IconButton>
+          ),
+        header: "Open",
+        id: "open",
+        enableSorting: false,
+        size: 20,
+      },
+    ),
     userShortUrlsColumnHelper.accessor((row) => row, {
       cell: (info) => (
         <ViewUrlDialog id={info.getValue().id} data={info.getValue()}>
