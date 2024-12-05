@@ -36,7 +36,7 @@ export const findPublicShortUrls = async () => {
 export const findShortUrlBySlug = async (slug: string) => {
   return await prisma.shortUrl.findUnique({
     where: { slug, isActive: true, deletedAt: null },
-    select: { url: true },
+    select: { id: true, url: true },
   });
 };
 
@@ -52,15 +52,21 @@ export const findShortUrlsByUserId = async (id: string) => {
   });
 };
 
-export const updateShortUrlAndUserId = async (
-  data: Omit<
-    OmitReadOnly<ShortUrl> & { id: string; userId: string },
-    "timesClicked"
-  >,
+export const updateShortUrlByIdAndUserId = async (
+  id: string,
+  userId: string,
+  data: Omit<OmitReadOnly<ShortUrl>, "timesClicked">,
 ) => {
   return await prisma.shortUrl.update({
     data,
-    where: { id: data.id, createdBy: data.userId },
+    where: { id, createdBy: userId, deletedAt: null },
+  });
+};
+
+export const incrementShortUrlClickById = async (id: string) => {
+  return await prisma.shortUrl.update({
+    data: { timesClicked: { increment: 1 } },
+    where: { id, deletedAt: null },
   });
 };
 

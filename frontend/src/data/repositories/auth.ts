@@ -1,6 +1,5 @@
 import apiClient from "@/config/api-client";
 import type { LoginInput } from "@/ui/pages/login/login-query";
-import { toFormData } from "axios";
 import type { DataResponse, GenericResponse } from "../type";
 
 export interface VerifyAuthResponse {
@@ -17,13 +16,7 @@ export const verifyAuthApi = async () => {
 };
 
 export const loginApi = async (input: LoginInput) => {
-  const { data } = await apiClient.post<GenericResponse>(
-    "/auth/login",
-    toFormData({
-      username: input.username,
-      password: input.password,
-    }),
-  );
+  const { data } = await apiClient.post<GenericResponse>("/auth/login", input);
   return data.success;
 };
 

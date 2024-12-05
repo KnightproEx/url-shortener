@@ -1,6 +1,6 @@
 import bearer from "@elysiajs/bearer";
 import Elysia, { redirect } from "elysia";
-import { findShortUrlBySlug } from "../db/shorturl";
+import { findShortUrlBySlug, incrementShortUrlClickById } from "../db/shorturl";
 import { notFoundError } from "../types/error";
 
 export const shortUrlGroup = new Elysia().group("/short-url", (app) =>
@@ -10,8 +10,12 @@ export const shortUrlGroup = new Elysia().group("/short-url", (app) =>
       const slug = path.split("/").slice(-1).pop();
       if (!slug) return notFoundError();
 
-      const url = (await findShortUrlBySlug(slug))?.url;
+      const data = await findShortUrlBySlug(slug);
+
+      const url = data?.url;
       if (!url) return notFoundError();
+
+      await incrementShortUrlClickById(data.id);
 
       return redirect(url);
     },

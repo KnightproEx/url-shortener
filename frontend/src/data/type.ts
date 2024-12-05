@@ -1,11 +1,3 @@
-// export interface User {
-//   id: string;
-//   password: string;
-//   createdAt: Date;
-//   updatedAt: Date;
-//   deletedAt: null;
-// }
-
 export enum StatusCode {
   Ok = 200,
   Created = 201,

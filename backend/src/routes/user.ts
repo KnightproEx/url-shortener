@@ -4,7 +4,7 @@ import {
   deleteShortUrlByIdAndUserId,
   findShortUrlById,
   findShortUrlsByUserId,
-  updateShortUrlAndUserId,
+  updateShortUrlByIdAndUserId,
 } from "../db/shorturl";
 import { createShortUrl } from "../db/shorturl";
 import { notFoundError } from "../types/error";
@@ -41,24 +41,21 @@ export const userGroup = new Elysia<"", false, ISingleton>().group(
         },
       )
       .put(
-        "/short-url",
-        async ({ body, user }) => {
-          const res = await findShortUrlById(body.id, user.id);
+        "/short-url/:id",
+        async ({ body, params: { id }, user }) => {
+          const res = await findShortUrlById(id, user.id);
 
           if (!res) {
             return notFoundError();
           }
 
-          const url = await updateShortUrlAndUserId({
-            userId: user.id,
-            ...body,
-          });
+          const url = await updateShortUrlByIdAndUserId(id, user.id, body);
           return DataResponse.json(url);
         },
         {
           tags: ["User"],
+          params: t.Object({ id: t.String() }),
           body: t.Object({
-            id: t.String(),
             name: t.String(),
             slug: t.String(),
             url: t.String(),
@@ -68,23 +65,21 @@ export const userGroup = new Elysia<"", false, ISingleton>().group(
         },
       )
       .delete(
-        "/short-url",
-        async ({ body, user }) => {
-          const res = await findShortUrlById(body.id, user.id);
+        "/short-url/:id",
+        async ({ params: { id }, user }) => {
+          const res = await findShortUrlById(id, user.id);
 
           if (!res) {
             return notFoundError();
           }
 
-          await deleteShortUrlByIdAndUserId(body.id, user.id);
+          await deleteShortUrlByIdAndUserId(id, user.id);
 
           return SuccessResponse.json();
         },
         {
           tags: ["User"],
-          body: t.Object({
-            id: t.String(),
-          }),
+          params: t.Object({ id: t.String() }),
         },
       ),
 );
