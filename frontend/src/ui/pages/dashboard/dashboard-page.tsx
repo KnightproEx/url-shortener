@@ -78,6 +78,13 @@ const DashboardPage = () => {
       cell: (info) => info.getValue(),
       header: "Url",
     }),
+    userShortUrlsColumnHelper.accessor("isPublic", {
+      cell: (info) => (
+        <Stack align="center">{info.getValue() ? "Yes" : "No"}</Stack>
+      ),
+      header: "Public",
+      size: 20,
+    }),
     userShortUrlsColumnHelper.accessor("isActive", {
       cell: (info) => (
         <Stack align="center">{info.getValue() ? "Yes" : "No"}</Stack>

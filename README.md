@@ -52,5 +52,6 @@ bun x prisma migrate dev
 
 ## Work in Progress
 
+[ ] Pagination
 [ ] Production Dockerfile
 [ ] Automated CI and CD
